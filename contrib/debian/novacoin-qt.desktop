@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=TheChiefCoin
+Comment=TheChiefCoin P2P Cryptocurrency
+Comment[ru]=TheChiefCoin, P2P криптовалюта
+Comment[fr]=TheChiefCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=TheChiefCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/TheChiefCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/TheChiefCoin80.xpm
+MimeType=x-scheme-handler/TheChiefCoin;
+Categories=Office;

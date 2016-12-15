@@ -1,0 +1,5 @@
+TheChiefCoin-qt usr/bin
+share/pixmaps/TheChiefCoin32.xpm usr/share/pixmaps
+share/pixmaps/TheChiefCoin80.xpm usr/share/pixmaps
+debian/TheChiefCoin-qt.desktop usr/share/applications
+debian/TheChiefCoin-qt.protocol usr/share/kde4/services/

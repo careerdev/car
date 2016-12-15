@@ -1,0 +1,2 @@
+debian/bin/TheChiefCoind usr/bin
+src/TheChiefCoind usr/lib/TheChiefCoin

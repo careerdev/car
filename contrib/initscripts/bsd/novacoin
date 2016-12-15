@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: TheChiefCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# TheChiefCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable TheChiefCoin service.
+# TheChiefCoin_config (path): Set to /usr/local/etc/TheChiefCoin.conf by default.
+# TheChiefCoin_user:  The user account TheChiefCoin daemon runs as. It uses 'root' user by default.
+# TheChiefCoin_group: The group account TheChiefCoin daemon runs as. It uses 'wheel' group by default.
+# TheChiefCoin_datadir (str): Default to "/var/db/TheChiefCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=TheChiefCoin
+rcvar=TheChiefCoin_enable
+
+: ${TheChiefCoin_enable:=NO}
+: ${TheChiefCoin_config=/usr/local/etc/TheChiefCoin.conf}
+: ${TheChiefCoin_datadir=/var/db/TheChiefCoin}
+: ${TheChiefCoin_user="root"}
+: ${TheChiefCoin_group="wheel"}
+
+required_files=${TheChiefCoin_config}
+command=/usr/local/bin/TheChiefCoind
+TheChiefCoin_chdir=${TheChiefCoin_datadir}
+pidfile="${TheChiefCoin_datadir}/TheChiefCoind.pid"
+stop_cmd=TheChiefCoin_stop
+command_args="-conf=${TheChiefCoin_config} -datadir=${TheChiefCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+TheChiefCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${TheChiefCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${TheChiefCoin_user}:${TheChiefCoin_group} ${TheChiefCoin_datadir}
+}
+
+TheChiefCoin_prestart()
+{
+	if [ ! -d "${TheChiefCoin_datadir}/." ]; then
+		TheChiefCoin_create_datadir || return 1
+	fi
+}
+
+TheChiefCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+TheChiefCoin_stop()
+{
+    TheChiefCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${TheChiefCoin_config} -datadir=${TheChiefCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

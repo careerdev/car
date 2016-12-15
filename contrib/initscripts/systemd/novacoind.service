@@ -1,0 +1,11 @@
+[Unit]
+Description=TheChiefCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=TheChiefCoin
+ExecStart=/opt/TheChiefCoin/TheChiefCoind
+
+[Install]
+WantedBy=multi-user.target
